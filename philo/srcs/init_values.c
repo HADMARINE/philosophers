@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 17:12:39 by lhojoon           #+#    #+#             */
-/*   Updated: 2023/12/19 18:07:55 by lhojoon          ###   ########.fr       */
+/*   Updated: 2023/12/19 19:49:34 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,17 @@ t_philo	*init_first_philo(t_data *dat)
 	return (philo);
 }
 
+static void	func_init_philo_init(t_philo *tp, int i)
+{
+	tp->eat_count = 0;
+	tp->id = i + 1;
+}
+
+static void	func_free_philo_if_error(t_philo *philo)
+{
+	
+}
+
 t_philo	*init_philo(t_data *dat)
 {
 	t_philo	*philo;
@@ -66,8 +77,7 @@ t_philo	*init_philo(t_data *dat)
 		if (!tp)
 			return (NULL); // free all philos
 		tpv->right_fork = tp;
-		tp->id = i + 1;
-		tp->eat_count = 0;
+		func_init_philo_init(tp, i);
 		tp->left_fork = tpv->right_fork;
 		if (i + 1 == dat->num_of_philo)
 			tp->right_fork = philo->left_fork;
