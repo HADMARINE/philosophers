@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/18 15:08:45 by lhojoon           #+#    #+#             */
-/*   Updated: 2023/12/20 18:27:04 by lhojoon          ###   ########.fr       */
+/*   Created: 2023/12/20 18:01:59 by lhojoon           #+#    #+#             */
+/*   Updated: 2023/12/20 21:20:28 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char **argv)
+unsigned long	get_timestamp(void)
 {
-	if (argc != 5 && argc != 6)
-		return (EXIT_FAILURE);
-	return (execute(argv));
-	return (0);
+	struct timeval	tv;
+	unsigned long	ret;
+
+	gettimeofday(&tv, NULL);
+	ret = (unsigned long)tv.tv_sec * 1000;
+	ret += (unsigned long)tv.tv_usec / 1000;
+	return (ret);
 }
