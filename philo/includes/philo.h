@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:12:43 by lhojoon           #+#    #+#             */
-/*   Updated: 2023/12/20 18:16:21 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/03/16 21:57:07 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,12 @@ t_philo			*init_philo(t_data *dat);
 bool			init_data(t_data *dat, char **argv);
 void			*philo_action(void *arg);
 unsigned long	get_timestamp(void);
+bool			take_forks(t_philo *arg, bool is_even);
+void			wait_start(t_philo *philo);
+bool			ph_eat(t_philo *arg, unsigned long *last_eat);
+void			ph_sleep(t_philo *arg);
+bool			check_same_args(t_philo *arg);
+void			ft_usleep(unsigned long time, t_data *dat);
+bool			check_died(t_philo *arg, unsigned long last_eat);
 
 #endif

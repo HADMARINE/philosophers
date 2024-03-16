@@ -6,7 +6,7 @@
 #    By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/18 14:31:50 by lhojoon           #+#    #+#              #
-#    Updated: 2023/12/20 18:34:25 by lhojoon          ###   ########.fr        #
+#    Updated: 2024/03/16 21:12:39 by lhojoon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ SRCS_RAW =	main.c \
 			ft_atoi.c \
 			init_values.c \
 			execute.c \
-			utils.c
+			utils.c \
+			execute_2.c
 SRCS = $(addprefix $(DIR)/,$(SRCS_RAW))
 OBJS = $(SRCS:c=o)
 INCLUDES = -I./includes

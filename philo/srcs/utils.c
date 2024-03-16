@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 18:01:59 by lhojoon           #+#    #+#             */
-/*   Updated: 2023/12/20 21:20:28 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/03/16 22:01:41 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,21 @@ unsigned long	get_timestamp(void)
 	ret = (unsigned long)tv.tv_sec * 1000;
 	ret += (unsigned long)tv.tv_usec / 1000;
 	return (ret);
+}
+
+void	ft_usleep(unsigned long time, t_data *dat)
+{
+	unsigned long	start;
+	bool			is_died;
+
+	start = get_timestamp();
+	while (get_timestamp() - start < time)
+	{
+		pthread_mutex_lock(&dat->mutex);
+		is_died = dat->is_died;
+		pthread_mutex_unlock(&dat->mutex);
+		if (is_died == true)
+			break ;
+		usleep(PHILO_TICK_WAIT * 1000);
+	}
 }
