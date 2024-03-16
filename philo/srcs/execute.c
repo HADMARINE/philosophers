@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 16:12:39 by lhojoon           #+#    #+#             */
-/*   Updated: 2023/12/20 20:59:21 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/03/16 16:02:32 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,13 @@ static void	wait_start(t_philo *philo)
 	}
 }
 
-static void	take_forks(t_philo *arg, bool is_even)
+static bool	take_forks(t_philo *arg, bool is_even)
 {
+	if (arg->left_philo == arg)
+	{
+		printf("Same fork\n");
+		return (false);
+	}
 	if (is_even)
 	{
 		pthread_mutex_lock(&arg->right_fork->mutex);
@@ -43,6 +48,7 @@ static void	take_forks(t_philo *arg, bool is_even)
 		pthread_mutex_lock(&arg->right_fork->mutex);
 		printf("%lu %d has taken a fork\n", get_timestamp(), arg->id);
 	}
+	return (true);
 }
 
 static void	ph_eat(t_philo *arg, unsigned long *last_eat)
@@ -52,8 +58,9 @@ static void	ph_eat(t_philo *arg, unsigned long *last_eat)
 	pthread_mutex_lock(&arg->data->mutex);
 	tte = arg->data->time_to_eat;
 	pthread_mutex_unlock(&arg->data->mutex);
-	take_forks(arg, true);
-	// take_forks(arg, arg->id % 2 == 0);
+	// take_forks(arg, true);
+	if (take_forks(arg, arg->id % 2 == 0) == false)
+		return ;
 	*last_eat = get_timestamp();
 	printf("%lu %d is eating\n", get_timestamp(), arg->id);
 	usleep((unsigned long)(tte * 1000));
@@ -91,7 +98,8 @@ static bool	check_died(t_philo *arg, unsigned long last_eat)
 		return (false);
 	}
 	return (true);
-} // check global died
+}
+// check global died
 
 void	*philo_action(void *arg)
 {

@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 17:12:39 by lhojoon           #+#    #+#             */
-/*   Updated: 2023/12/20 20:40:51 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/03/16 16:01:28 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,7 @@ t_philo	*init_philo(t_data *dat)
 		tp->left_fork = tpv->right_fork;
 		tp->data = dat;
 		if (i + 1 == dat->num_of_philo)
-		{
 			tp->right_fork = philo->left_fork;
-		}
 		else
 		{
 			tp->right_fork = init_fork();
