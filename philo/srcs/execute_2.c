@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 21:10:24 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/03/16 22:02:23 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/03/17 21:54:30 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	check_same_args(t_philo *arg)
 	pthread_mutex_lock(&arg->left_philo->data->mutex);
 	left = arg->left_philo;
 	pthread_mutex_unlock(&arg->left_philo->data->mutex);
-	if (arg->left_philo == arg)
+	if (cur == left)
 	{
 		pthread_mutex_lock(&arg->data->mutex);
 		arg->data->is_died = true;
@@ -54,16 +54,16 @@ void	wait_start(t_philo *philo)
 {
 	bool	is_started;
 
+	pthread_mutex_lock(&philo->data->mutex);
 	philo->initialized = true;
+	pthread_mutex_unlock(&philo->data->mutex);
 	while (true)
 	{
 		pthread_mutex_lock(&philo->data->mutex);
 		is_started = philo->data->is_started;
 		pthread_mutex_unlock(&philo->data->mutex);
 		if (is_started)
-		{
 			break ;
-		}
 	}
 }
 

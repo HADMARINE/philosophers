@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 16:12:39 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/03/16 21:57:01 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/03/17 21:55:04 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,42 +38,34 @@ bool	check_died(t_philo *arg, unsigned long last_eat)
 	}
 	return (true);
 }
-// check global died
 
-void	*philo_action(void *arg)
+static void
+	wait_all_philo_while_do(bool *is_entered, bool *initialized, t_philo **tp)
 {
-	unsigned long	last_eat;
-
-	wait_start((t_philo *)arg);
-	last_eat = get_timestamp();
-	while (true)
-	{
-		if (check_died((t_philo *)arg, last_eat) == false)
-			break ;
-		ph_eat((t_philo *)arg, &last_eat);
-		((t_philo *)arg)->eat_count++;
-		ph_sleep((t_philo *)arg);
-	}
-	return (NULL);
+	pthread_mutex_unlock(&(*tp)->data->mutex);
+	*is_entered = true;
+	pthread_mutex_lock(&(*tp)->data->mutex);
+	*initialized = (*tp)->initialized;
+	pthread_mutex_unlock(&(*tp)->data->mutex);
+	*tp = (*tp)->right_philo;
+	pthread_mutex_lock(&(*tp)->data->mutex);
 }
 
 void	wait_all_philo(t_philo *philo)
 {
 	t_philo	*tp;
 	bool	is_entered;
-	bool	initialzed;
+	bool	initialized;
 
 	tp = philo;
 	is_entered = false;
 	while (true)
 	{
+		pthread_mutex_lock(&tp->data->mutex);
 		while (tp->id != 1 || !is_entered)
-		{
-			is_entered = true;
-			initialzed = tp->initialized;
-			tp = tp->right_philo;
-		}
-		if (initialzed == true)
+			wait_all_philo_while_do(&is_entered, &initialized, &tp);
+		pthread_mutex_unlock(&tp->data->mutex);
+		if (initialized == true)
 		{
 			pthread_mutex_lock(&philo->data->mutex);
 			philo->data->is_started = true;

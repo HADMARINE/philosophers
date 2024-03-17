@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:12:43 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/03/16 21:57:07 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/03/17 22:18:50 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,6 @@ void			ph_sleep(t_philo *arg);
 bool			check_same_args(t_philo *arg);
 void			ft_usleep(unsigned long time, t_data *dat);
 bool			check_died(t_philo *arg, unsigned long last_eat);
+t_philo			*init_first_philo(t_data *dat);
 
 #endif
