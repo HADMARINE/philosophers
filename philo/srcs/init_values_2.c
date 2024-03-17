@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:36:31 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/03/17 22:19:13 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/03/17 23:57:19 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool	init_data(t_data *dat, char **argv)
 	return (true);
 }
 
-static t_fork	*init_fork(void)
+t_fork	*init_fork(void)
 {
 	t_fork	*fork;
 

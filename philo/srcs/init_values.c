@@ -6,23 +6,11 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 17:12:39 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/03/17 22:18:27 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/03/17 23:56:11 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-static t_fork	*init_fork(void)
-{
-	t_fork	*fork;
-
-	fork = (t_fork *)malloc(sizeof(t_fork));
-	if (!fork)
-		return (NULL);
-	if (pthread_mutex_init(&fork->mutex, NULL) != 0)
-		return (free(fork), NULL);
-	return (fork);
-}
 
 static void	func_free_philo_if_error(t_philo *philo)
 {
