@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:12:43 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/03/17 23:57:30 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/04/22 14:51:16 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <stdlib.h>
 # include <stdbool.h>
 
-# define PHILO_TICK_WAIT 1
+# define PHILO_TICK_WAIT 0.1
 
 typedef struct s_fork
 {
