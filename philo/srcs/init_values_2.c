@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:36:31 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/03/17 23:57:19 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/04/30 13:20:49 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ bool	init_data(t_data *dat, char **argv)
 		dat->num_of_must_eat = -1;
 	dat->is_died = false;
 	dat->is_started = false;
-	if (pthread_mutex_init(&dat->mutex, NULL) != 0)
+	if (pthread_mutex_init(&dat->mutex, NULL) != 0
+		|| pthread_mutex_init(&dat->print_mutex, NULL) != 0)
 	{
 		printf("mutex init error\n");
 		return (false);

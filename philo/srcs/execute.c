@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 16:12:39 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/03/17 21:55:04 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/04/30 13:24:43 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ bool	check_died(t_philo *arg, unsigned long last_eat)
 
 	current_time = get_timestamp();
 	if (check_same_args(arg) == false)
-	{
-		printf("%lu %d died\n", get_timestamp(), arg->id);
-		return (false);
-	}
+		return (pthread_mutex_lock(&arg->data->print_mutex),
+			printf("%lu %d died\n", get_timestamp(), arg->id),
+			pthread_mutex_unlock(&arg->data->print_mutex),
+			false);
 	pthread_mutex_lock(&arg->data->mutex);
 	ttd = arg->data->time_to_die;
 	is_died = arg->data->is_died;
@@ -33,7 +33,9 @@ bool	check_died(t_philo *arg, unsigned long last_eat)
 		pthread_mutex_lock(&arg->data->mutex);
 		arg->data->is_died = true;
 		pthread_mutex_unlock(&arg->data->mutex);
+		pthread_mutex_lock(&arg->data->print_mutex);
 		printf("%lu %d died\n", get_timestamp(), arg->id);
+		pthread_mutex_unlock(&arg->data->print_mutex);
 		return (false);
 	}
 	return (true);
