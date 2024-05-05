@@ -6,20 +6,24 @@
 #    By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/18 14:31:50 by lhojoon           #+#    #+#              #
-#    Updated: 2023/12/20 18:34:25 by lhojoon          ###   ########.fr        #
+#    Updated: 2024/04/22 14:53:46 by lhojoon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
+# DEBUG = -g3
 
 DIR = srcs
 SRCS_RAW =	main.c \
 			ft_atoi.c \
 			init_values.c \
 			execute.c \
-			utils.c
+			utils.c \
+			execute_2.c \
+			init_values_2.c \
+			execute_3.c
 SRCS = $(addprefix $(DIR)/,$(SRCS_RAW))
 OBJS = $(SRCS:c=o)
 INCLUDES = -I./includes

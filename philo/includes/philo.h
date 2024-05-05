@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:12:43 by lhojoon           #+#    #+#             */
-/*   Updated: 2023/12/20 18:16:21 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/04/30 13:17:51 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <stdlib.h>
 # include <stdbool.h>
 
-# define PHILO_TICK_WAIT 1
+# define PHILO_TICK_WAIT 0.1
 
 typedef struct s_fork
 {
@@ -37,6 +37,7 @@ typedef struct s_data
 	bool			is_died;
 	bool			is_started;
 	pthread_mutex_t	mutex;
+	pthread_mutex_t	print_mutex;
 }	t_data;
 
 typedef struct s_philo
@@ -58,5 +59,14 @@ t_philo			*init_philo(t_data *dat);
 bool			init_data(t_data *dat, char **argv);
 void			*philo_action(void *arg);
 unsigned long	get_timestamp(void);
+bool			take_forks(t_philo *arg, bool is_even);
+void			wait_start(t_philo *philo);
+bool			ph_eat(t_philo *arg, unsigned long *last_eat);
+void			ph_sleep(t_philo *arg);
+bool			check_same_args(t_philo *arg);
+void			ft_usleep(unsigned long time, t_data *dat);
+bool			check_died(t_philo *arg, unsigned long last_eat);
+t_philo			*init_first_philo(t_data *dat);
+t_fork			*init_fork(void);
 
 #endif

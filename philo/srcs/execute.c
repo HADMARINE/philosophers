@@ -6,127 +6,68 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 16:12:39 by lhojoon           #+#    #+#             */
-/*   Updated: 2023/12/20 20:59:21 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/04/30 13:24:43 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	wait_start(t_philo *philo)
-{
-	bool	is_started;
-
-	philo->initialized = true;
-	while (true)
-	{
-		pthread_mutex_lock(&philo->data->mutex);
-		is_started = philo->data->is_started;
-		pthread_mutex_unlock(&philo->data->mutex);
-		if (is_started)
-		{
-			break ;
-		}
-	}
-}
-
-static void	take_forks(t_philo *arg, bool is_even)
-{
-	if (is_even)
-	{
-		pthread_mutex_lock(&arg->right_fork->mutex);
-		pthread_mutex_lock(&arg->left_fork->mutex);
-		printf("%lu %d has taken a fork\n", get_timestamp(), arg->id);
-	}
-	else
-	{
-		pthread_mutex_lock(&arg->left_fork->mutex);
-		pthread_mutex_lock(&arg->right_fork->mutex);
-		printf("%lu %d has taken a fork\n", get_timestamp(), arg->id);
-	}
-}
-
-static void	ph_eat(t_philo *arg, unsigned long *last_eat)
-{
-	unsigned int	tte;
-
-	pthread_mutex_lock(&arg->data->mutex);
-	tte = arg->data->time_to_eat;
-	pthread_mutex_unlock(&arg->data->mutex);
-	take_forks(arg, true);
-	// take_forks(arg, arg->id % 2 == 0);
-	*last_eat = get_timestamp();
-	printf("%lu %d is eating\n", get_timestamp(), arg->id);
-	usleep((unsigned long)(tte * 1000));
-	pthread_mutex_unlock(&arg->left_fork->mutex);
-	pthread_mutex_unlock(&arg->right_fork->mutex);
-}
-
-static void	ph_sleep(t_philo *arg)
-{
-	unsigned int	tts;
-
-	pthread_mutex_lock(&arg->data->mutex);
-	tts = arg->data->time_to_sleep;
-	pthread_mutex_unlock(&arg->data->mutex);
-	printf("%lu %d is sleeping\n", get_timestamp(), arg->id);
-	usleep((unsigned long)(tts * 1000));
-	printf("%lu %d is thinking\n", get_timestamp(), arg->id);
-}
-
-static bool	check_died(t_philo *arg, unsigned long last_eat)
+bool	check_died(t_philo *arg, unsigned long last_eat)
 {
 	unsigned long	current_time;
 	unsigned int	ttd;
+	bool			is_died;
 
 	current_time = get_timestamp();
+	if (check_same_args(arg) == false)
+		return (pthread_mutex_lock(&arg->data->print_mutex),
+			printf("%lu %d died\n", get_timestamp(), arg->id),
+			pthread_mutex_unlock(&arg->data->print_mutex),
+			false);
 	pthread_mutex_lock(&arg->data->mutex);
 	ttd = arg->data->time_to_die;
+	is_died = arg->data->is_died;
 	pthread_mutex_unlock(&arg->data->mutex);
-	if (current_time - last_eat > (unsigned long)(ttd))
+	if (current_time - last_eat > (unsigned long)(ttd) || is_died == true)
 	{
 		pthread_mutex_lock(&arg->data->mutex);
 		arg->data->is_died = true;
 		pthread_mutex_unlock(&arg->data->mutex);
+		pthread_mutex_lock(&arg->data->print_mutex);
 		printf("%lu %d died\n", get_timestamp(), arg->id);
+		pthread_mutex_unlock(&arg->data->print_mutex);
 		return (false);
 	}
 	return (true);
-} // check global died
+}
 
-void	*philo_action(void *arg)
+static void
+	wait_all_philo_while_do(bool *is_entered, bool *initialized, t_philo **tp)
 {
-	unsigned long	last_eat;
-
-	wait_start((t_philo *)arg);
-	last_eat = get_timestamp();
-	while (true)
-	{
-		if (check_died((t_philo *)arg, last_eat) == false)
-			break ;
-		ph_eat((t_philo *)arg, &last_eat);
-		((t_philo *)arg)->eat_count++;
-		ph_sleep((t_philo *)arg);
-	}
-	return (NULL);
+	pthread_mutex_unlock(&(*tp)->data->mutex);
+	*is_entered = true;
+	pthread_mutex_lock(&(*tp)->data->mutex);
+	*initialized = (*tp)->initialized;
+	pthread_mutex_unlock(&(*tp)->data->mutex);
+	*tp = (*tp)->right_philo;
+	pthread_mutex_lock(&(*tp)->data->mutex);
 }
 
 void	wait_all_philo(t_philo *philo)
 {
 	t_philo	*tp;
 	bool	is_entered;
-	bool	initialzed;
+	bool	initialized;
 
 	tp = philo;
 	is_entered = false;
 	while (true)
 	{
+		pthread_mutex_lock(&tp->data->mutex);
 		while (tp->id != 1 || !is_entered)
-		{
-			is_entered = true;
-			initialzed = tp->initialized;
-			tp = tp->right_philo;
-		}
-		if (initialzed == true)
+			wait_all_philo_while_do(&is_entered, &initialized, &tp);
+		pthread_mutex_unlock(&tp->data->mutex);
+		if (initialized == true)
 		{
 			pthread_mutex_lock(&philo->data->mutex);
 			philo->data->is_started = true;
