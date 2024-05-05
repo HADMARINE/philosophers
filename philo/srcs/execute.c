@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 16:12:39 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/04/30 13:24:43 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/05/05 18:43:36 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	wait_all_philo(t_philo *philo)
 		while (tp->id != 1 || !is_entered)
 			wait_all_philo_while_do(&is_entered, &initialized, &tp);
 		pthread_mutex_unlock(&tp->data->mutex);
+		ft_usleep(10, philo->data);
 		if (initialized == true)
 		{
 			pthread_mutex_lock(&philo->data->mutex);
@@ -105,5 +106,6 @@ int	execute(char **argv)
 		return (EXIT_FAILURE);
 	wait_all_philo(philo);
 	join_all_philo(philo);
+	free_philo(philo);
 	return (EXIT_SUCCESS);
 }
