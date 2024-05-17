@@ -13,7 +13,7 @@
 NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-# DEBUG = -g3
+DEBUG = -g
 
 DIR = srcs
 SRCS_RAW =	main.c \
