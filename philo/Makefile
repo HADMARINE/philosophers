@@ -6,7 +6,7 @@
 #    By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/18 14:31:50 by lhojoon           #+#    #+#              #
-#    Updated: 2024/04/22 14:53:46 by lhojoon          ###   ########.fr        #
+#    Updated: 2024/05/17 19:46:34 by lhojoon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ SRCS_RAW =	main.c \
 			utils.c \
 			execute_2.c \
 			init_values_2.c \
-			execute_3.c
+			execute_3.c \
+			free_philo.c
 SRCS = $(addprefix $(DIR)/,$(SRCS_RAW))
 OBJS = $(SRCS:c=o)
 INCLUDES = -I./includes
