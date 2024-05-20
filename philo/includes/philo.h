@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:12:43 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/05/17 19:28:27 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/05/20 18:33:50 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ bool			check_died_noprint(t_philo *arg, unsigned long last_eat);
 t_philo			*init_first_philo(t_data *dat);
 t_fork			*init_fork(void);
 void			free_philo(t_philo *philo);
+bool			check_input(const char *input);
 
 #endif

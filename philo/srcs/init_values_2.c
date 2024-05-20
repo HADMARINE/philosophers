@@ -6,11 +6,24 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:36:31 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/04/30 13:20:49 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/05/20 18:35:08 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static bool	verify_parameters(char **argv)
+{
+	int	i;
+
+	i = 0;
+	while (i < 4)
+	{
+		if (!check_input(argv[i + 1]))
+			return (false);
+	}
+	return (true);
+}
 
 bool	init_data(t_data *dat, char **argv)
 {
