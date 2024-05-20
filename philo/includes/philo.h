@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:12:43 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/05/20 18:33:50 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/05/20 20:03:13 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <stdlib.h>
 # include <stdbool.h>
 
-# define PHILO_TICK_WAIT 0.1
+# define PHILO_TICK_WAIT 0.0001
 
 typedef struct s_fork
 {
@@ -36,6 +36,7 @@ typedef struct s_data
 	int				num_of_must_eat;
 	bool			is_died;
 	bool			is_started;
+	unsigned long	time_started;
 	pthread_mutex_t	mutex;
 	pthread_mutex_t	print_mutex;
 }	t_data;
@@ -71,5 +72,6 @@ t_philo			*init_first_philo(t_data *dat);
 t_fork			*init_fork(void);
 void			free_philo(t_philo *philo);
 bool			check_input(const char *input);
+unsigned long	get_time_diff(t_data *dat);
 
 #endif

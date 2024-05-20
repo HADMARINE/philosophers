@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 16:12:39 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/05/05 19:08:22 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/05/20 20:05:26 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,6 @@ bool	check_died(t_philo *arg, unsigned long last_eat)
 	bool			is_died;
 
 	current_time = get_timestamp();
-	if (check_same_args(arg) == false)
-		return (pthread_mutex_lock(&arg->data->print_mutex),
-			printf("%lu %d died\n", get_timestamp(), arg->id),
-			pthread_mutex_unlock(&arg->data->print_mutex),
-			false);
 	pthread_mutex_lock(&arg->data->mutex);
 	ttd = arg->data->time_to_die;
 	is_died = arg->data->is_died;
@@ -34,7 +29,7 @@ bool	check_died(t_philo *arg, unsigned long last_eat)
 		arg->data->is_died = true;
 		pthread_mutex_unlock(&arg->data->mutex);
 		pthread_mutex_lock(&arg->data->print_mutex);
-		printf("%lu %d died\n", get_timestamp(), arg->id);
+		printf("%lu %d died\n", get_time_diff(arg->data), arg->id);
 		pthread_mutex_unlock(&arg->data->print_mutex);
 		return (false);
 	}
@@ -67,7 +62,7 @@ void	wait_all_philo(t_philo *philo)
 		while (tp->id != 1 || !is_entered)
 			wait_all_philo_while_do(&is_entered, &initialized, &tp);
 		pthread_mutex_unlock(&tp->data->mutex);
-		ft_usleep(10, philo->data);
+		ft_usleep(1, philo->data);
 		if (initialized == true)
 		{
 			pthread_mutex_lock(&philo->data->mutex);
@@ -105,6 +100,9 @@ int	execute(char **argv)
 	if (!philo)
 		return (EXIT_FAILURE);
 	wait_all_philo(philo);
+	pthread_mutex_lock(&philo->data->mutex);
+	philo->data->time_started = get_timestamp();
+	pthread_mutex_unlock(&philo->data->mutex);
 	join_all_philo(philo);
 	free_philo(philo);
 	return (EXIT_SUCCESS);

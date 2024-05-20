@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:36:31 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/05/20 18:35:08 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/05/20 20:03:24 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,25 @@ static bool	verify_parameters(char **argv)
 	int	i;
 
 	i = 0;
-	while (i < 4)
+	while (i < 5 && argv[i + 1])
 	{
 		if (!check_input(argv[i + 1]))
 			return (false);
+		i++;
 	}
 	return (true);
 }
 
 bool	init_data(t_data *dat, char **argv)
 {
+	if (!verify_parameters(argv))
+		return (false);
 	dat->num_of_philo = ft_atoi(argv[1]);
 	dat->time_to_die = ft_atoi(argv[2]);
 	dat->time_to_eat = ft_atoi(argv[3]);
 	dat->time_to_sleep = ft_atoi(argv[4]);
+	if (dat->num_of_philo == 1)
+		return (printf("0 1 died\n"), false);
 	if (argv[5])
 		dat->num_of_must_eat = ft_atoi(argv[5]);
 	else

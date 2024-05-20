@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 21:10:24 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/05/05 19:14:24 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/05/20 20:01:15 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,11 @@ bool	take_forks(t_philo *arg, bool is_even)
 	{
 		pthread_mutex_lock(&arg->right_fork->mutex);
 		pthread_mutex_lock(&arg->left_fork->mutex);
-		pthread_mutex_lock(&arg->data->print_mutex);
-		printf("%lu %d has taken a fork\n", get_timestamp(), arg->id);
-		pthread_mutex_unlock(&arg->data->print_mutex);
 	}
 	else
 	{
 		pthread_mutex_lock(&arg->left_fork->mutex);
 		pthread_mutex_lock(&arg->right_fork->mutex);
-		pthread_mutex_lock(&arg->data->print_mutex);
-		printf("%lu %d has taken a fork\n", get_timestamp(), arg->id);
-		pthread_mutex_unlock(&arg->data->print_mutex);
 	}
 	return (true);
 }
@@ -77,9 +71,7 @@ bool	ph_eat(t_philo *arg, unsigned long *last_eat)
 	unsigned int	tte;
 	bool			res;
 
-	pthread_mutex_lock(&arg->data->mutex);
 	tte = arg->data->time_to_eat;
-	pthread_mutex_unlock(&arg->data->mutex);
 	if (take_forks(arg, arg->id % 2 == 0) == false)
 		return (false);
 	if (check_died(arg, *last_eat) == false)
@@ -88,11 +80,12 @@ bool	ph_eat(t_philo *arg, unsigned long *last_eat)
 		pthread_mutex_unlock(&arg->right_fork->mutex);
 		return (false);
 	}
-	*last_eat = get_timestamp();
 	pthread_mutex_lock(&arg->data->print_mutex);
-	printf("%lu %d is eating\n", get_timestamp(), arg->id);
+	printf("%lu %d has taken a fork\n", get_time_diff(arg->data), arg->id);
+	printf("%lu %d is eating\n", get_time_diff(arg->data), arg->id);
 	pthread_mutex_unlock(&arg->data->print_mutex);
 	res = ft_usleep((unsigned long)(tte), arg->data);
+	*last_eat = get_timestamp();
 	pthread_mutex_unlock(&arg->left_fork->mutex);
 	pthread_mutex_unlock(&arg->right_fork->mutex);
 	return (res);
@@ -106,11 +99,11 @@ void	ph_sleep(t_philo *arg)
 	tts = arg->data->time_to_sleep;
 	pthread_mutex_unlock(&arg->data->mutex);
 	pthread_mutex_lock(&arg->data->print_mutex);
-	printf("%lu %d is sleeping\n", get_timestamp(), arg->id);
+	printf("%lu %d is sleeping\n", get_time_diff(arg->data), arg->id);
 	pthread_mutex_unlock(&arg->data->print_mutex);
 	if (!ft_usleep((unsigned long)(tts), arg->data))
 		return ;
 	pthread_mutex_lock(&arg->data->print_mutex);
-	printf("%lu %d is thinking\n", get_timestamp(), arg->id);
+	printf("%lu %d is thinking\n", get_time_diff(arg->data), arg->id);
 	pthread_mutex_unlock(&arg->data->print_mutex);
 }

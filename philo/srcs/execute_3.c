@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:54:35 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/05/05 19:15:48 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/05/20 20:01:58 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,14 @@ bool	check_died_noprint(t_philo *arg, unsigned long last_eat)
 		return (false);
 	}
 	return (true);
+}
+
+unsigned long	get_time_diff(t_data *dat)
+{
+	unsigned long	time;
+
+	pthread_mutex_lock(&dat->mutex);
+	time = dat->time_started;
+	pthread_mutex_unlock(&dat->mutex);
+	return (get_timestamp() - time);
 }
