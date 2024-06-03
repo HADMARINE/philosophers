@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:12:43 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/05/20 20:03:13 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/06/03 18:15:26 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdbool.h>
 
 # define PHILO_TICK_WAIT 0.0001
+// # define PHILO_TICK_WAIT 0.00001
 
 typedef struct s_fork
 {
@@ -63,9 +64,11 @@ unsigned long	get_timestamp(void);
 bool			take_forks(t_philo *arg, bool is_even);
 void			wait_start(t_philo *philo);
 bool			ph_eat(t_philo *arg, unsigned long *last_eat);
-void			ph_sleep(t_philo *arg);
+bool			ph_sleep(t_philo *arg, unsigned long *last_eat);
 bool			check_same_args(t_philo *arg);
 bool			ft_usleep(unsigned long time, t_data *dat);
+bool			ft_usleep_v(unsigned long time, t_data *dat,
+					unsigned long last_eat);
 bool			check_died(t_philo *arg, unsigned long last_eat);
 bool			check_died_noprint(t_philo *arg, unsigned long last_eat);
 t_philo			*init_first_philo(t_data *dat);

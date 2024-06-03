@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 21:10:24 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/05/20 20:01:15 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/06/03 18:17:18 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ bool	ph_eat(t_philo *arg, unsigned long *last_eat)
 	tte = arg->data->time_to_eat;
 	if (take_forks(arg, arg->id % 2 == 0) == false)
 		return (false);
-	if (check_died(arg, *last_eat) == false)
+	if (check_died_noprint(arg, *last_eat) == false)
 	{
 		pthread_mutex_unlock(&arg->left_fork->mutex);
 		pthread_mutex_unlock(&arg->right_fork->mutex);
@@ -84,26 +84,26 @@ bool	ph_eat(t_philo *arg, unsigned long *last_eat)
 	printf("%lu %d has taken a fork\n", get_time_diff(arg->data), arg->id);
 	printf("%lu %d is eating\n", get_time_diff(arg->data), arg->id);
 	pthread_mutex_unlock(&arg->data->print_mutex);
-	res = ft_usleep((unsigned long)(tte), arg->data);
-	*last_eat = get_timestamp();
+	res = ft_usleep_v((unsigned long)(tte), arg->data, *last_eat);
+	if (res)
+		*last_eat = get_timestamp();
 	pthread_mutex_unlock(&arg->left_fork->mutex);
 	pthread_mutex_unlock(&arg->right_fork->mutex);
 	return (res);
 }
 
-void	ph_sleep(t_philo *arg)
+bool	ph_sleep(t_philo *arg, unsigned long *last_eat)
 {
 	unsigned int	tts;
 
-	pthread_mutex_lock(&arg->data->mutex);
 	tts = arg->data->time_to_sleep;
-	pthread_mutex_unlock(&arg->data->mutex);
 	pthread_mutex_lock(&arg->data->print_mutex);
 	printf("%lu %d is sleeping\n", get_time_diff(arg->data), arg->id);
 	pthread_mutex_unlock(&arg->data->print_mutex);
-	if (!ft_usleep((unsigned long)(tts), arg->data))
-		return ;
+	if (!ft_usleep_v((unsigned long)(tts), arg->data, *last_eat))
+		return (false);
 	pthread_mutex_lock(&arg->data->print_mutex);
 	printf("%lu %d is thinking\n", get_time_diff(arg->data), arg->id);
 	pthread_mutex_unlock(&arg->data->print_mutex);
+	return (true);
 }

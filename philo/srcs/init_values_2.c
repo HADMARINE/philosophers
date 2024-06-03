@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 21:36:31 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/05/20 20:03:24 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/06/03 15:11:03 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ bool	init_data(t_data *dat, char **argv)
 	dat->time_to_eat = ft_atoi(argv[3]);
 	dat->time_to_sleep = ft_atoi(argv[4]);
 	if (dat->num_of_philo == 1)
-		return (printf("0 1 died\n"), false);
+	{
+		ft_usleep(dat->time_to_die / 1000, dat);
+		return (printf("%u 1 died\n", dat->time_to_die), false);
+	}
 	if (argv[5])
 		dat->num_of_must_eat = ft_atoi(argv[5]);
 	else
