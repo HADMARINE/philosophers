@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:33:14 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/05/20 19:14:35 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/06/04 19:24:19 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ bool	check_input(const char *input)
 	size_t		len;
 
 	p = input;
-	if (*p)
+	while (*p)
 	{
 		if (*p < '0' || *p > '9')
 			return (false);

@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 21:10:24 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/06/03 18:17:18 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/06/04 19:21:15 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ bool	take_forks(t_philo *arg, bool is_even)
 	}
 	else
 	{
+		ft_usleep(1, arg->data);
 		pthread_mutex_lock(&arg->left_fork->mutex);
 		pthread_mutex_lock(&arg->right_fork->mutex);
 	}

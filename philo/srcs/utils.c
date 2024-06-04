@@ -6,7 +6,7 @@
 /*   By: lhojoon <lhojoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 18:01:59 by lhojoon           #+#    #+#             */
-/*   Updated: 2024/06/03 18:16:30 by lhojoon          ###   ########.fr       */
+/*   Updated: 2024/06/04 19:13:21 by lhojoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,24 +45,24 @@ bool	ft_usleep_v(unsigned long time, t_data *dat, unsigned long last_eat)
 {
 	unsigned long	start;
 	bool			is_died;
-	unsigned int	ttd;
+	unsigned long	ttd;
 
 	start = get_timestamp();
+	ttd = dat->time_to_die + last_eat;
 	while (get_timestamp() - start < time)
 	{
-		pthread_mutex_lock(&dat->mutex);
-		is_died = dat->is_died;
-		ttd = dat->time_to_die;
-		pthread_mutex_unlock(&dat->mutex);
-		if (is_died == true)
-			return (false);
-		if (last_eat + ttd < get_timestamp())
+		if (ttd < get_timestamp())
 		{
 			pthread_mutex_lock(&dat->mutex);
 			dat->is_died = true;
 			pthread_mutex_unlock(&dat->mutex);
 			return (false);
 		}
+		pthread_mutex_lock(&dat->mutex);
+		is_died = dat->is_died;
+		pthread_mutex_unlock(&dat->mutex);
+		if (is_died == true)
+			return (false);
 		usleep(PHILO_TICK_WAIT * 1000);
 	}
 	return (true);
